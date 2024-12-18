@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Middleware Demo</title>
+    <link rel="stylesheet" href="style.css"> <!-- Link to the CSS file -->
+</head>
+<body>
+    <h1>Middleware Demo</h1>
+    <p>Open the browser console (F12) to see logs for button clicks and form submissions!</p>
+
+    <!-- Buttons to trigger GET requests -->
+    <div class="button-container">
+        <button onclick="fetchAbout()">Fetch About Page</button>
+        <button onclick="fetchContact()">Fetch Contact Page</button>
+    </div>
+
+    <!-- Form for POST requests -->
+    <form id="dataForm" class="form-container">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" placeholder="Enter your name" required>
+
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" placeholder="Type your message" rows="4" required></textarea>
+
+        <button type="submit">Submit Form</button>
+    </form>
+
+    <!-- Section to display responses from the server -->
+    <p id="response" class="response-box">Server Response Will Appear Here...</p>
+
+    <script>
+        console.log("Front-End Loaded!");
+
+        // Function to fetch data from the /about route
+        function fetchAbout() {
+            fetch('/about')
+                .then(res => res.text())
+                .then(data => {
+                    document.getElementById('response').innerText = data;
+                    console.log('GET /about triggered');
+                });
+        }
+
+        // Function to fetch data from the /contact route
+        function fetchContact() {
+            fetch('/contact')
+                .then(res => res.text())
+                .then(data => {
+                    document.getElementById('response').innerText = data;
+                    console.log('GET /contact triggered');
+                });
+        }
+
+        // Event listener for form submission
+        document.getElementById('dataForm').onsubmit = async (event) => {
+            event.preventDefault(); // Prevent default page reload
+            const formData = new FormData(event.target); // Gather form data
+
+            console.log("Form Data Submitted:", Object.fromEntries(formData.entries()));
+
+            // Send POST request with form data
+            const response = await fetch('/submit-form', {
+                method: 'POST',
+                body: new URLSearchParams(formData)
+            });
+
+            const result = await response.text(); // Parse server response
+            document.getElementById('response').innerText = result; // Display response
+            console.log('POST /submit-form triggered');
+        };
+    </script>
+</body>
+</html>
+
