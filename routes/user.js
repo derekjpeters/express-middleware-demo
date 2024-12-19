@@ -22,9 +22,6 @@ const router = express.Router();
  *                   name:
  *                     type: string
  */
-router.get('/users', (req, res) => {
-    res.json([{ id: 1, name: 'John Doe' }]);
-});
 
 /**
  * @swagger
@@ -35,7 +32,7 @@ router.get('/users', (req, res) => {
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:  # Properly formatted
+ *         application/json:
  *           schema:
  *             type: object
  *             properties:
@@ -45,6 +42,7 @@ router.get('/users', (req, res) => {
  *       201:
  *         description: User created successfully.
  */
+
 router.post('/users', (req, res) => {
     const { name } = req.body;
     res.status(201).json({ id: 2, name });
