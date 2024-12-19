@@ -2,7 +2,9 @@ const express = require('express');
 const { swaggerUi, swaggerDocs } = require('./swagger');
 const app = express();
 const userRoutes = require('./routes/user');
+const cors = require('cors');
 
+app.use(cors());
 app.use('/api', userRoutes);
 
 //Middleware to log request details
