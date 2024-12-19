@@ -1,5 +1,9 @@
 const express = require('express'); 
+const { swaggerUi, swaggerDocs } = require('./swagger');
 const app = express();
+const userRoutes = require('./routes/user');
+
+app.use('/api', userRoutes);
 
 //Middleware to log request details
 const requestLogger = (req, res, next) => {
@@ -7,6 +11,11 @@ const requestLogger = (req, res, next) => {
     console.log(`[MIDDLEWARE] [${timeStamp}] ${req.method} ${req.url}`);
     next();
 }
+
+app.use(express.json()); //Middleware to parse JSON request
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs)); //Will setup SwaggerUI for our express application
+
+
 
 //Middleware to parse form data
 app.use(express.urlencoded({ extended: true}));
@@ -41,4 +50,5 @@ app.post('/submit-form', (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`server is running on ${PORT}`);
+    console.log(`Swagger docs available at ${PORT}/api-docs`);
 });
