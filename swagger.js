@@ -21,6 +21,6 @@ const swaggerOptions = {
     
 };
 
-const swaggerDocs = swaggerJsDoc(swaggerJsDoc);
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
 module.exports = {swaggerUi, swaggerDocs};
